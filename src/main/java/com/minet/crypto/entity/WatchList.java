@@ -10,38 +10,36 @@ import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
-@Table(name = "users")
+@Table(name = "watch_list")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
-public class User {
+public class WatchList {
+
     @Id
     @GeneratedValue(generator = "uuidv4")
     @GenericGenerator(name = "uuidv4", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "id", columnDefinition = "uuid")
     private UUID id;
 
-    @Column(name = "user_name")
-    private String userName;
-
-    @Column(name = "user_email")
-    private String userEmail;
-
-    @Column(name = "user_password")
-    private String password;
-
-    @Column(name = "status")
+    @Column(name = "status" ,length = 50, nullable = false)
     private String status;
 
-    @Column(name = "created_at")
     @CreationTimestamp
+    @Column(name = "created_at")
     private Timestamp createdAt;
 
-    @Column(name = "updated_at")
     @UpdateTimestamp
+    @Column(name = "updated_at")
     private Timestamp updatedAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName ="id")
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "crypto_id", referencedColumnName ="id")
+    private CryptoCurrency cryptoCurrency;
 }
